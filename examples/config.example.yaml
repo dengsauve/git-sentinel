@@ -1,0 +1,31 @@
+defaults:
+  interval_seconds: 300
+  remote: origin
+  branch: main
+  pull: true
+  push: false
+  hook_failure_policy: continue
+
+repositories:
+  - name: dashboards
+    path: /code/repo1/dashboards
+    pull: true
+    push: true
+    interval_seconds: 300
+    commit:
+      enabled: true
+      message: "chore: sync automated dashboard updates"
+      add:
+        - "."
+    after_pull:
+      - ["./scripts/rebuild-cache.sh"]
+    after_push:
+      - ["./scripts/notify.sh"]
+
+  - name: app-config
+    path: /code/repo2/app-config
+    pull: true
+    push: false
+    interval_seconds: 900
+    after_pull:
+      - ["python", "scripts/refresh.py"]
