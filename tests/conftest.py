@@ -49,5 +49,6 @@ def remote_with_clone(tmp_path: Path, git_env: None) -> tuple[Path, Path]:
     run(["git", "commit", "-m", "initial"], cwd=working)
     run(["git", "remote", "add", "origin", str(remote)], cwd=working)
     run(["git", "push", "-u", "origin", "main"], cwd=working)
+    run(["git", "symbolic-ref", "HEAD", "refs/heads/main"], cwd=remote)
     run(["git", "clone", str(remote), str(clone)], cwd=tmp_path)
     return remote, clone
